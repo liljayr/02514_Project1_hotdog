@@ -1,4 +1,6 @@
 .DS_Store
+hotdog_nothotdog/*
+hotdog_nothotdog/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
