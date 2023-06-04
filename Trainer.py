@@ -8,6 +8,8 @@ from torch.utils.data import DataLoader
 import torchvision.transforms as transforms
 import torchvision.transforms.functional as TTF
 import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
 
 class SquarePad:
     # https://discuss.pytorch.org/t/how-to-resize-and-pad-in-a-torchvision-transforms-compose/71850/5
@@ -107,4 +109,39 @@ class Trainer:
         plt.legend(('Test error','Train eror'))
         plt.xlabel('Epoch number')
         plt.ylabel('Loss')
+        plt.show()
+
+    def confusionMatrix(self, model):
+        y_pred = np.array([])
+        y_true = np.array([])
+        for data, target in self.test_loader:
+            data = data.to(self.device)
+            
+            with torch.no_grad():
+                output = model(data)
+            predicted = (output > 0.5).to(torch.int)
+            y_pred = np.hstack((y_pred, predicted.cpu().numpy()))
+            y_true = np.hstack((y_true, target.cpu().numpy()))
+
+        confusionMatrix = confusion_matrix(y_true, y_pred)
+        precision = confusionMatrix / confusionMatrix.sum(axis=1)
+
+        labels = ['hotdog', 'not-hotdog']
+        title = 'Confusion matrix'
+        plt.figure(figsize=(5, 5))
+        sns.heatmap(confusionMatrix, cmap="Blues", annot=True, fmt=".1f", xticklabels=labels, yticklabels=labels)
+        plt.title("Confusion Matrix", fontsize=10)
+        plt.xlabel('Predicted label', fontsize=10)
+        plt.ylabel('True label', fontsize=10)
+        plt.tick_params(labelsize=10)
+        plt.xticks(rotation=90)
+        plt.show()
+
+        plt.figure(figsize=(5, 5))
+        sns.heatmap(precision, cmap="Blues", annot=True, fmt=".3f", xticklabels=labels, yticklabels=labels)
+        plt.title("Precision Matrix", fontsize=10)
+        plt.xlabel('Predicted label', fontsize=10)
+        plt.ylabel('True label', fontsize=10)
+        plt.tick_params(labelsize=10)
+        plt.xticks(rotation=90)
         plt.show()
