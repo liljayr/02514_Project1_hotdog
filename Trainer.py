@@ -23,7 +23,7 @@ class SquarePad:
 
 
 class Trainer:
-    def __init__(self, data_path, image_size=128, batch_size=64) -> None:
+    def __init__(self, data_path, image_size=128, batch_size=64, normalize=True) -> None:
         if torch.cuda.is_available():
             print("The code will run on GPU.")
         else:
@@ -35,8 +35,11 @@ class Trainer:
                                 transforms.Resize(image_size),
                                 transforms.CenterCrop(image_size),
                                 transforms.ToTensor(),
-                                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                                 ])
+        if normalize:
+            self.normalize = transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        else:
+            self.normalize = None
 
         self.trainset = datasets.ImageFolder(root=f"{data_path}/train/", transform=transform)
         self.train_loader = DataLoader(self.trainset, batch_size=batch_size, shuffle=True, num_workers=1)
@@ -65,7 +68,10 @@ class Trainer:
                 #Zero the gradients computed for each weight
                 optimizer.zero_grad()
                 #Forward pass your image through the network
-                output = model(data)
+                if self.normalize != None:
+                    output = model(self.normalize(data).to(self.device))
+                else:
+                    output = model(data)
                 loss = self.loss_fun(output, target)
                 #Backward pass through the network
                 loss.backward()
@@ -83,7 +89,10 @@ class Trainer:
             for data, target in self.test_loader:
                 data, target = data.to(self.device), target.to(self.device)
                 with torch.no_grad():
-                    output = model(data)
+                    if self.normalize != None:
+                        output = model(self.normalize(data).to(self.device))
+                    else:
+                        output = model(data)
                 test_loss.append(self.loss_fun(output, target).cpu().item())
                 predicted = (output > 0.5).to(torch.int)
                 test_correct += (target==predicted).sum().cpu().item()
@@ -111,33 +120,48 @@ class Trainer:
         plt.ylabel('Loss')
         plt.show()
 
-    def confusionMatrix(self, model):
+    def confusionMatrix(self, model, show_images=False):
         y_pred = np.array([])
         y_true = np.array([])
+
+        true_positive = []
+        true_negative = []
+        false_positive = []
+        false_negative = []
+
         for data, target in self.test_loader:
-            data = data.to(self.device)
+            data, target = data.to(self.device), target.to(self.device)
             
             with torch.no_grad():
-                output = model(data)
+                if self.normalize != None:
+                    output = model(self.normalize(data).to(self.device))
+                else:
+                    output = model(data)
             predicted = (output > 0.5).to(torch.int)
             y_pred = np.hstack((y_pred, predicted.cpu().numpy()))
             y_true = np.hstack((y_true, target.cpu().numpy()))
+
+            true_positive += data[(target==predicted).cpu() & (predicted==0).cpu()].cpu()
+            true_negative += data[(target==predicted).cpu() & (predicted==1).cpu()].cpu()
+            
+            false_positive += data[(target!=predicted).cpu() & (predicted==0).cpu()].cpu()
+            false_negative += data[(target!=predicted).cpu() & (predicted==1).cpu()].cpu()
 
         confusionMatrix = confusion_matrix(y_true, y_pred)
         precision = confusionMatrix / confusionMatrix.sum(axis=1)
 
         labels = ['hotdog', 'not-hotdog']
         title = 'Confusion matrix'
-        plt.figure(figsize=(5, 5))
+        plt.figure(figsize=(10, 5))
+        plt.subplot(1,2,1)
         sns.heatmap(confusionMatrix, cmap="Blues", annot=True, fmt=".1f", xticklabels=labels, yticklabels=labels)
         plt.title("Confusion Matrix", fontsize=10)
         plt.xlabel('Predicted label', fontsize=10)
         plt.ylabel('True label', fontsize=10)
         plt.tick_params(labelsize=10)
         plt.xticks(rotation=90)
-        plt.show()
 
-        plt.figure(figsize=(5, 5))
+        plt.subplot(1,2,2)
         sns.heatmap(precision, cmap="Blues", annot=True, fmt=".3f", xticklabels=labels, yticklabels=labels)
         plt.title("Precision Matrix", fontsize=10)
         plt.xlabel('Predicted label', fontsize=10)
@@ -145,3 +169,20 @@ class Trainer:
         plt.tick_params(labelsize=10)
         plt.xticks(rotation=90)
         plt.show()
+
+        if show_images:
+            plt.figure(figsize=(20,10))
+            plt.suptitle("Misclassified False Positive Hotdog Images", fontsize=16)
+            for i in range(21):
+                plt.subplot(5,7,i+1)
+                plt.imshow(false_positive[i].numpy().transpose(1,2,0))#.reshape(512,512,3))
+                plt.title("false hotdog")
+                plt.axis('off')
+                
+            plt.figure(figsize=(20,10))
+            plt.suptitle("Misclassified False Negative Hotdog Images", fontsize=16)
+            for i in range(21):
+                plt.subplot(5,7,i+1)
+                plt.imshow(false_negative[i].numpy().transpose(1,2,0))#.reshape(512,512,3))
+                plt.title("false not-hotdog")
+                plt.axis('off')
