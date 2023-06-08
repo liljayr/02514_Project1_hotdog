@@ -47,6 +47,10 @@ class Trainer:
         self.test_loader = DataLoader(self.testset, batch_size=batch_size, shuffle=False, num_workers=1)
     
         self.loss_fn = nn.BCELoss()  # binary cross entropy
+        self.true_positive = []
+        self.true_negative = []
+        self.false_positive = []
+        self.false_negative = []
 
     def loss_fun(self, output, target):
         return self.loss_fn(output.to(torch.float), target.to(torch.float))
@@ -124,10 +128,10 @@ class Trainer:
         y_pred = np.array([])
         y_true = np.array([])
 
-        true_positive = []
-        true_negative = []
-        false_positive = []
-        false_negative = []
+        self.true_positive = []
+        self.true_negative = []
+        self.false_positive = []
+        self.false_negative = []
 
         for data, target in self.test_loader:
             data, target = data.to(self.device), target.to(self.device)
@@ -141,11 +145,11 @@ class Trainer:
             y_pred = np.hstack((y_pred, predicted.cpu().numpy()))
             y_true = np.hstack((y_true, target.cpu().numpy()))
 
-            true_positive += data[(target==predicted).cpu() & (predicted==0).cpu()].cpu()
-            true_negative += data[(target==predicted).cpu() & (predicted==1).cpu()].cpu()
+            self.true_positive += data[(target==predicted).cpu() & (predicted==0).cpu()].cpu()
+            self.true_negative += data[(target==predicted).cpu() & (predicted==1).cpu()].cpu()
             
-            false_positive += data[(target!=predicted).cpu() & (predicted==0).cpu()].cpu()
-            false_negative += data[(target!=predicted).cpu() & (predicted==1).cpu()].cpu()
+            self.false_positive += data[(target!=predicted).cpu() & (predicted==0).cpu()].cpu()
+            self.false_negative += data[(target!=predicted).cpu() & (predicted==1).cpu()].cpu()
 
         confusionMatrix = confusion_matrix(y_true, y_pred)
         precision = confusionMatrix / confusionMatrix.sum(axis=1)
@@ -175,7 +179,7 @@ class Trainer:
             plt.suptitle("Misclassified False Positive Hotdog Images", fontsize=16)
             for i in range(21):
                 plt.subplot(5,7,i+1)
-                plt.imshow(false_positive[i].numpy().transpose(1,2,0))#.reshape(512,512,3))
+                plt.imshow(self.false_positive[i].numpy().transpose(1,2,0))#.reshape(512,512,3))
                 plt.title("false hotdog")
                 plt.axis('off')
                 
@@ -183,6 +187,6 @@ class Trainer:
             plt.suptitle("Misclassified False Negative Hotdog Images", fontsize=16)
             for i in range(21):
                 plt.subplot(5,7,i+1)
-                plt.imshow(false_negative[i].numpy().transpose(1,2,0))#.reshape(512,512,3))
+                plt.imshow(self.false_negative[i].numpy().transpose(1,2,0))#.reshape(512,512,3))
                 plt.title("false not-hotdog")
                 plt.axis('off')
