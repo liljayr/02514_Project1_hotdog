@@ -1,0 +1,54 @@
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 16810894: <efficientTrain> in cluster <dcc> Exited
+
+Job <efficientTrain> was submitted from host <hpclogin1> by user <s222698> in cluster <dcc> at Tue Jun  6 13:48:25 2023
+Job was executed on host(s) <n-62-20-13>, in queue <gpuv100>, as user <s222698> in cluster <dcc> at Tue Jun  6 13:48:26 2023
+</zhome/bd/4/181258> was used as the home directory.
+</zhome/bd/4/181258/02514/02514> was used as the working directory.
+Started at Tue Jun  6 13:48:26 2023
+Terminated at Tue Jun  6 13:49:24 2023
+Results reported at Tue Jun  6 13:49:24 2023
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+ #BSUB -q gpuv100
+ #BSUB -gpu "num=1"
+ #BSUB -J efficientTrain
+ #BSUB -n 1
+ #BSUB -W 10:00
+ #BSUB -R "rusage[mem=32GB]"
+ #BSUB -o logs/%J.out
+ #BSUB -e logs/%J.err
+ source /zhome/bd/4/181258/02514/venv_1
+ echo "Running script..."
+ python3 efficientnet_train.py
+
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   3.23 sec.
+    Max Memory :                                 67 MB
+    Average Memory :                             67.00 MB
+    Total Requested Memory :                     32768.00 MB
+    Delta Memory :                               32701.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                5
+    Run time :                                   118 sec.
+    Turnaround time :                            59 sec.
+
+The output (if any) follows:
+
+Running script...
+
+
+PS:
+
+Read file <logs/16810894.err> for stderr output of this job.
+

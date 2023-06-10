@@ -1,0 +1,7 @@
+/zhome/bd/4/181258/.lsbatch/1686052105.16810894.shell: line 10: source: /zhome/bd/4/181258/02514/venv_1: is a directory
+Traceback (most recent call last):
+  File "efficientnet_train.py", line 37, in <module>
+    model = TransferLearningNetwork().to(device)
+  File "efficientnet_train.py", line 19, in __init__
+    model = models.efficientnet_b7(weights=models.EfficientNet_B7_Weights.DEFAULT).to(device)
+AttributeError: module 'torchvision.models' has no attribute 'EfficientNet_B7_Weights'

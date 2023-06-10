@@ -1,0 +1,118 @@
+Running script...
+The code will run on GPU.
+  0%|          | 0/30 [00:00<?, ?epoch/s]
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.492	 test: 0.434	 Accuracy train: 83.5%	 test: 86.2%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.316	 test: 0.277	 Accuracy train: 91.5%	 test: 92.5%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.254	 test: 0.215	 Accuracy train: 93.0%	 test: 94.2%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.223	 test: 0.180	 Accuracy train: 93.4%	 test: 95.1%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.197	 test: 0.159	 Accuracy train: 93.9%	 test: 95.2%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.181	 test: 0.145	 Accuracy train: 94.2%	 test: 95.4%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.176	 test: 0.137	 Accuracy train: 94.4%	 test: 95.6%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.173	 test: 0.132	 Accuracy train: 94.0%	 test: 95.8%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.166	 test: 0.129	 Accuracy train: 94.2%	 test: 95.8%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.153	 test: 0.126	 Accuracy train: 94.4%	 test: 96.0%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.151	 test: 0.125	 Accuracy train: 95.1%	 test: 96.0%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.146	 test: 0.124	 Accuracy train: 95.4%	 test: 96.0%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.142	 test: 0.123	 Accuracy train: 95.0%	 test: 96.0%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.136	 test: 0.121	 Accuracy train: 95.6%	 test: 95.8%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.129	 test: 0.121	 Accuracy train: 95.4%	 test: 95.9%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.130	 test: 0.120	 Accuracy train: 95.3%	 test: 96.0%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.134	 test: 0.120	 Accuracy train: 95.0%	 test: 95.9%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.120	 test: 0.118	 Accuracy train: 95.5%	 test: 95.9%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.125	 test: 0.117	 Accuracy train: 95.6%	 test: 96.1%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.132	 test: 0.119	 Accuracy train: 95.3%	 test: 96.0%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.114	 test: 0.116	 Accuracy train: 95.8%	 test: 96.0%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.119	 test: 0.115	 Accuracy train: 95.8%	 test: 96.1%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.115	 test: 0.113	 Accuracy train: 95.9%	 test: 96.0%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.116	 test: 0.114	 Accuracy train: 95.7%	 test: 96.1%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.119	 test: 0.114	 Accuracy train: 96.1%	 test: 96.1%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.115	 test: 0.113	 Accuracy train: 96.0%	 test: 96.1%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.114	 test: 0.112	 Accuracy train: 96.1%	 test: 96.1%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.109	 test: 0.113	 Accuracy train: 95.7%	 test: 96.0%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.099	 test: 0.111	 Accuracy train: 96.6%	 test: 96.0%
+  0%|          | 0/32 [00:00<?, ?it/s]
+Loss train: 0.102	 test: 0.112	 Accuracy train: 96.3%	 test: 96.1%
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 16810898: <efficientTrain> in cluster <dcc> Done
+
+Job <efficientTrain> was submitted from host <hpclogin1> by user <s222698> in cluster <dcc> at Tue Jun  6 13:51:09 2023
+Job was executed on host(s) <n-62-20-13>, in queue <gpuv100>, as user <s222698> in cluster <dcc> at Tue Jun  6 13:51:10 2023
+</zhome/bd/4/181258> was used as the home directory.
+</zhome/bd/4/181258/02514/02514> was used as the working directory.
+Started at Tue Jun  6 13:51:10 2023
+Terminated at Tue Jun  6 14:35:42 2023
+Results reported at Tue Jun  6 14:35:42 2023
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+ #BSUB -q gpuv100
+ #BSUB -gpu "num=1"
+ #BSUB -J efficientTrain
+ #BSUB -n 1
+ #BSUB -W 10:00
+ #BSUB -R "rusage[mem=32GB]"
+ #BSUB -o logs/%J.out
+ #BSUB -e logs/%J.err
+ source /zhome/bd/4/181258/02514/venv_1/bin/activate
+ echo "Running script..."
+ python3 efficientnet_train.py
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   2591.18 sec.
+    Max Memory :                                 2841 MB
+    Average Memory :                             2496.57 MB
+    Total Requested Memory :                     32768.00 MB
+    Delta Memory :                               29927.00 MB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                34
+    Run time :                                   2778 sec.
+    Turnaround time :                            2673 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/16810898.err> for stderr output of this job.
+
