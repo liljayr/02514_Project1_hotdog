@@ -4,14 +4,17 @@ import numpy as np
 import glob
 from PIL import Image, ImageSequence
 from sklearn.model_selection import train_test_split
-
+import torchvision.transforms.functional as TF
+import torchvision.transforms as transforms
+import random
 
 class PH2DataLoader(torch.utils.data.Dataset):
-    def __init__(self, transform, data_path, train=False, validation=False):
+    def __init__(self, size, data_path, train=False, validation=False, augmentation=False):
         'Initialization'
-        self.transform = transform
         self.data_paths = sorted(glob.glob(data_path + '/*'))
-        
+        self.size = size
+        self.augmentation=augmentation
+
         if train:
             self.data_paths = self.data_paths[:int(len(self.data_paths)*0.7)]
         elif validation:
@@ -28,7 +31,32 @@ class PH2DataLoader(torch.utils.data.Dataset):
     def __len__(self):
         'Returns the total number of samples'
         return len(self.image_paths)
+    
+    def transform(self, image, mask):
+        # Resize
+        resize = transforms.Resize(size=(self.size, self.size))
+        color = transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1)
+        image = resize(image)
+        mask = resize(mask)
 
+        if self.augmentation:
+            # Random horizontal flipping
+            if random.random() > 0.5:
+                image = TF.hflip(image)
+                mask = TF.hflip(mask)
+
+            # Random vertical flipping
+            if random.random() > 0.5:
+                image = TF.vflip(image)
+                mask = TF.vflip(mask)
+            # Random Color
+            if random.random()>0.5:
+                image = color(image)
+        # Transform to tensor
+        image = TF.to_tensor(image)
+        mask = TF.to_tensor(mask)
+        return image, mask
+    
     def __getitem__(self, idx):
         'Generates one sample of data'
         image_path = self.image_paths[idx]
@@ -37,10 +65,7 @@ class PH2DataLoader(torch.utils.data.Dataset):
         image = Image.open(image_path)
         label = Image.open(label_path)
 
-
-
-        Y = self.transform(label)
-        X = self.transform(image)
+        X, Y =  self.transform(image, label)
         return X, Y
     
 
